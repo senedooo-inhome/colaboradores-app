@@ -107,3 +107,13 @@ body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;background:var(--bg)
 #overlay.hidden { display:none !important; }
 .menu.hidden    { display:none !important; }
 table.hidden    { display:none !important; }
+
+/* Força hidden a esconder de verdade */
+.hidden{display:none !important;}
+#overlay.hidden{display:none !important;}
+.menu.hidden{display:none !important;}
+.view.hidden{display:none !important;}
+table.hidden{display:none !important;}
+
+/* A assistente não intercepta cliques */
+.assistant-hero{pointer-events:none;}
