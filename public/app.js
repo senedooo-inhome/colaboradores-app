@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('[app] carregado'); // debug rápido; veja no console do navegador
+
+  // ... TODO: 
+
 // ===== Helpers =====
 const api = (path, opts) =>
   fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts })
@@ -239,3 +244,6 @@ async function renderFerias(){
 /* ===== Inicial ===== */
 renderHighlights();
 renderFerias();
+
+});
+

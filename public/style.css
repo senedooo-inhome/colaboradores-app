@@ -104,3 +104,6 @@ body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;background:var(--bg)
 
 /* Tabela: dica inicial */
 #tbody-hint td{text-align:center;padding:32px;color:#667}
+#overlay.hidden { display:none !important; }
+.menu.hidden    { display:none !important; }
+table.hidden    { display:none !important; }
