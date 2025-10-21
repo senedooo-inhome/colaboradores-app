@@ -1,28 +1,54 @@
-// db.js
+// db.js — inicializa banco SQLite e expõe operações
+const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const DB_PATH = process.env.RENDER ? '/data/database.sqlite' : path.join(__dirname, 'database.sqlite');
+
+// Diretório do banco com fallback inteligente:
+// 1) DATA_DIR (env)  2) /data (quando você tiver Disk)  3) /tmp (free/ephemeral)
+const baseDir = process.env.DATA_DIR || (fs.existsSync('/data') ? '/data' : '/tmp');
+fs.mkdirSync(baseDir, { recursive: true });
+
+const DB_PATH = path.join(baseDir, 'database.sqlite');
+console.log('[DB] Usando banco em:', DB_PATH);
+
 const db = new sqlite3.Database(DB_PATH);
 
-const run = (sql, params = []) => new Promise((res, rej) => {
-  db.run(sql, params, function (err) { if (err) rej(err); else res(this); });
-});
-const get = (sql, params = []) => new Promise((res, rej) => {
-  db.get(sql, params, (err, row) => err ? rej(err) : res(row));
-});
-const all = (sql, params = []) => new Promise((res, rej) => {
-  db.all(sql, params, (err, rows) => err ? rej(err) : res(rows));
-});
+// Helpers em Promise
+const run = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) return reject(err);
+      resolve(this);
+    });
+  });
 
+const getP = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) return reject(err);
+      resolve(row);
+    });
+  });
+
+const allP = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+
+// Cria tabelas (ajuste seus campos conforme já tinha)
 const init = async () => {
   await run(`
     CREATE TABLE IF NOT EXISTS colaboradores (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
-      status TEXT NOT NULL DEFAULT 'ativo',
-      logado INTEGER NOT NULL DEFAULT 0
+      logado INTEGER NOT NULL DEFAULT 0,
+      status TEXT DEFAULT 'ativo'
     )
   `);
+
   await run(`
     CREATE TABLE IF NOT EXISTS ferias (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,38 +58,12 @@ const init = async () => {
   `);
 };
 
-const allColab = () => all('SELECT * FROM colaboradores ORDER BY id DESC');
-const getColab = (id) => get('SELECT * FROM colaboradores WHERE id = ?', [id]);
-const create = async (nome, status = 'ativo') => {
-  const info = await run('INSERT INTO colaboradores (nome, status, logado) VALUES (?, ?, 0)', [nome, status]);
-  return getColab(info.lastID);
-};
-const update = async (id, nome, status = 'ativo') => {
-  await run('UPDATE colaboradores SET nome = ?, status = ? WHERE id = ?', [nome, status, id]);
-  return getColab(id);
-};
-const remove = (id) => run('DELETE FROM colaboradores WHERE id = ?', [id]);
-const setLogado = (id, logado) => run('UPDATE colaboradores SET logado = ? WHERE id = ?', [logado ? 1 : 0, id]);
-const countLogados = async () => (await get('SELECT COUNT(*) AS c FROM colaboradores WHERE logado = 1')).c || 0;
-const listLogados = () => all('SELECT * FROM colaboradores WHERE logado = 1 ORDER BY id DESC');
-const bulkSet = async (ids = []) => {
-  await run('UPDATE colaboradores SET logado = 0');
-  for (const id of ids) await run('UPDATE colaboradores SET logado = 1 WHERE id = ?', [id]);
-};
-const resetLogados = () => run('UPDATE colaboradores SET logado = 0');
-
-/* férias */
-const feriasAll = () => all('SELECT * FROM ferias ORDER BY mes ASC, id DESC');
-const feriasCreate = async (nome, mes) => {
-  const r = await run('INSERT INTO ferias (nome, mes) VALUES (?, ?)', [nome, Number(mes)]);
-  return get('SELECT * FROM ferias WHERE id = ?', [r.lastID]);
-};
-const feriasRemove = (id) => run('DELETE FROM ferias WHERE id = ?', [id]);
+// ...demais funções (all, get, create, update, remove, etc) ficam iguais
 
 module.exports = {
   init,
-  all: allColab,
-  get: getColab,
+  all,
+  get,
   create,
   update,
   remove,
@@ -71,8 +71,5 @@ module.exports = {
   countLogados,
   listLogados,
   bulkSet,
-  resetLogados,
-  feriasAll,
-  feriasCreate,
-  feriasRemove,
+  // inclua os exports de "ferias" se você já tem
 };
