@@ -11,8 +11,8 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="brand">
-        <img src="logo.png" alt="Sonax In Home" class="brand-logo" />
-        <div class="brand-name">Sonax<br><span>In home</span></div>
+        <!-- Somente a logo (ícone) -->
+        <img src="logo.png" alt="Sonax" class="brand-logo" />
       </div>
 
       <nav>
@@ -38,13 +38,18 @@
         </div>
 
         <div class="top-actions">
-          <button id="export-logados" class="btn btn-outline">
-            <span class="icon">⬇</span> Exportar Logados (CSV)
+          <button id="export-todos" class="btn btn-outline">
+            <span class="icon">⬇</span> Exportar (CSV)
           </button>
-          <button id="export-nao-logados" class="btn btn-outline">
-            <span class="icon">⬇</span> Exportar Não Logados (CSV)
-          </button>
-          <button id="btn-add" class="btn btn-primary">+ Adicionar</button>
+
+          <!-- Botão + Adicionar com menu -->
+          <div class="add-wrap">
+            <button id="btn-add" class="btn btn-primary">+ Adicionar</button>
+            <div id="add-menu" class="menu hidden">
+              <button id="menu-add-agente" class="menu-item">Adicionar agente</button>
+              <button id="menu-add-ferias" class="menu-item">Adicionar próximas férias</button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -58,7 +63,7 @@
           </div>
 
           <div class="card-body">
-            <table id="table" class="table">
+            <table id="table" class="table hidden">
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -69,29 +74,25 @@
               </thead>
               <tbody></tbody>
             </table>
+            <div id="search-hint" class="muted">Digite no campo acima para buscar um colaborador…</div>
           </div>
         </div>
 
-        <!-- Destaques: Férias/Atestado -->
-        <div class="grid-2">
+        <!-- Destaques: empilhados um abaixo do outro -->
+        <div class="stack">
           <div class="card card-lg">
             <div class="card-header">
               <h3>Colaboradores de Atestado ou Férias</h3>
             </div>
-            <div class="card-body" id="destaques-list">
-              <!-- app.js preenche -->
-            </div>
+            <div class="card-body" id="destaques-list"></div>
           </div>
 
-          <!-- Próximos de Férias -->
           <div class="card card-lg">
             <div class="card-header">
               <h3>Próximos agentes de férias</h3>
               <div class="chip" id="mes-atual">Mês</div>
             </div>
-            <div class="card-body" id="ferias-list">
-              <!-- app.js preenche -->
-            </div>
+            <div class="card-body" id="ferias-list"></div>
           </div>
         </div>
       </section>
@@ -125,20 +126,42 @@
       </section>
     </main>
 
-    <!-- Hero da assistente -->
+    <!-- Hero da assistente (não clica, não atrapalha) -->
     <img src="assistant.png" alt="Assistente" class="assistant-hero" />
   </div>
 
-  <!-- Overlay + Modal -->
+  <!-- Overlay + Modais -->
   <div id="overlay" class="hidden"></div>
-  <div id="modal" class="modal hidden">
+
+  <!-- Modal Agente -->
+  <div id="modal-agente" class="modal hidden">
     <div class="modal-content">
-      <h3 id="modal-title">Adicionar Colaborador</h3>
-      <input id="modal-input" placeholder="Nome do colaborador" />
-      <!-- status opcional no mesmo input? (já preparado no app.js se quiser expandir) -->
+      <h3>Adicionar agente</h3>
+      <input id="agente-nome" placeholder="Nome do colaborador" />
       <div class="modal-actions">
-        <button id="modal-cancel" class="btn">Cancelar</button>
-        <button id="modal-save" class="btn btn-primary">Salvar</button>
+        <button class="btn" data-close="agente">Cancelar</button>
+        <button id="agente-save" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Férias -->
+  <div id="modal-ferias" class="modal hidden">
+    <div class="modal-content">
+      <h3>Adicionar próximas férias</h3>
+      <input id="ferias-nome" placeholder="Nome do colaborador" />
+      <select id="ferias-mes">
+        <option value="" disabled selected>Mês</option>
+        <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+        <option value="3">Março</option><option value="4">Abril</option>
+        <option value="5">Maio</option><option value="6">Junho</option>
+        <option value="7">Julho</option><option value="8">Agosto</option>
+        <option value="9">Setembro</option><option value="10">Outubro</option>
+        <option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+      <div class="modal-actions">
+        <button class="btn" data-close="ferias">Cancelar</button>
+        <button id="ferias-save" class="btn btn-primary">Salvar</button>
       </div>
     </div>
   </div>
