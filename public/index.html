@@ -8,62 +8,111 @@
 </head>
 <body>
   <div class="app">
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <h2 class="brand">Sistema de Colaboradores</h2>
+      <div class="brand">
+        <img src="logo.png" alt="Sonax In Home" class="brand-logo" />
+        <div class="brand-name">Sonax<br><span>In home</span></div>
+      </div>
+
       <nav>
-        <button data-view="colaboradores" class="nav-btn active"><span>👥</span> Colaboradores</button>
-        <button data-view="controle" class="nav-btn"><span>🗂️</span> Controle de Logados</button>
-        <button data-view="operacao" class="nav-btn"><span>📊</span> Operação Ativa</button>
+        <button data-view="colaboradores" class="nav-btn active">
+          <span>👥</span> Colaboradores
+        </button>
+        <button data-view="controle" class="nav-btn">
+          <span>🗂️</span> Controle de Logados
+        </button>
+        <button data-view="operacao" class="nav-btn">
+          <span>📊</span> Operação Ativa
+        </button>
       </nav>
     </aside>
 
+    <!-- Main -->
     <main class="main">
+      <!-- Topbar -->
       <header class="topbar">
-        <div>
+        <div class="titles">
           <h1 id="page-title">Colaboradores</h1>
           <div id="data-hoje" class="muted"></div>
         </div>
-        <div class="export-group">
-          <a id="exp-logados" class="btn" href="/api/export?type=logados&format=csv">Exportar Logados (CSV)</a>
-          <a id="exp-nao" class="btn" href="/api/export?type=nao&format=csv">Exportar Não Logados (CSV)</a>
+
+        <div class="top-actions">
+          <button id="export-logados" class="btn btn-outline">
+            <span class="icon">⬇</span> Exportar Logados (CSV)
+          </button>
+          <button id="export-nao-logados" class="btn btn-outline">
+            <span class="icon">⬇</span> Exportar Não Logados (CSV)
+          </button>
+          <button id="btn-add" class="btn btn-primary">+ Adicionar</button>
         </div>
       </header>
 
+      <!-- ====== VIEW: COLABORADORES ====== -->
       <section id="colaboradores" class="view">
         <div class="card">
           <div class="card-header">
             <div class="search-wrap">
               <input id="search" placeholder="Buscar colaborador..." />
             </div>
-            <button id="btn-add" class="btn btn-green">+ Adicionar</button>
           </div>
 
           <div class="card-body">
             <table id="table" class="table">
               <thead>
-                <tr><th>Nome</th><th>Status</th><th>Logado</th><th>Ações</th></tr>
+                <tr>
+                  <th>Nome</th>
+                  <th>Status</th>
+                  <th>Logado</th>
+                  <th>Ações</th>
+                </tr>
               </thead>
               <tbody></tbody>
             </table>
           </div>
         </div>
+
+        <!-- Destaques: Férias/Atestado -->
+        <div class="grid-2">
+          <div class="card card-lg">
+            <div class="card-header">
+              <h3>Colaboradores de Atestado ou Férias</h3>
+            </div>
+            <div class="card-body" id="destaques-list">
+              <!-- app.js preenche -->
+            </div>
+          </div>
+
+          <!-- Próximos de Férias -->
+          <div class="card card-lg">
+            <div class="card-header">
+              <h3>Próximos agentes de férias</h3>
+              <div class="chip" id="mes-atual">Mês</div>
+            </div>
+            <div class="card-body" id="ferias-list">
+              <!-- app.js preenche -->
+            </div>
+          </div>
+        </div>
       </section>
 
+      <!-- ====== VIEW: CONTROLE ====== -->
       <section id="controle" class="view hidden">
         <div class="card">
           <div class="card-header">
             <h3>Controle de Logados</h3>
-            <button id="save-status" class="btn btn-green">Salvar Status</button>
+            <button id="save-status" class="btn btn-primary">Salvar Status</button>
           </div>
           <div class="card-body" id="controle-list"></div>
         </div>
       </section>
 
+      <!-- ====== VIEW: OPERAÇÃO ====== -->
       <section id="operacao" class="view hidden">
         <div class="card">
           <div class="card-header">
             <h3>Operação Ativa</h3>
-            <button id="refresh-operacao" class="btn">Atualizar</button>
+            <button id="refresh-operacao" class="btn btn-outline">Atualizar</button>
           </div>
           <div class="card-body">
             <div class="stat">
@@ -75,22 +124,21 @@
         </div>
       </section>
     </main>
+
+    <!-- Hero da assistente -->
+    <img src="assistant.png" alt="Assistente" class="assistant-hero" />
   </div>
 
-  <!-- overlay e modal -->
+  <!-- Overlay + Modal -->
   <div id="overlay" class="hidden"></div>
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <h3 id="modal-title">Adicionar Colaborador</h3>
       <input id="modal-input" placeholder="Nome do colaborador" />
-      <select id="modal-status">
-        <option value="ativo">Ativo</option>
-        <option value="ferias">Férias</option>
-        <option value="atestado">Atestado</option>
-      </select>
+      <!-- status opcional no mesmo input? (já preparado no app.js se quiser expandir) -->
       <div class="modal-actions">
         <button id="modal-cancel" class="btn">Cancelar</button>
-        <button id="modal-save" class="btn btn-green">Salvar</button>
+        <button id="modal-save" class="btn btn-primary">Salvar</button>
       </div>
     </div>
   </div>
