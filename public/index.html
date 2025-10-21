@@ -11,7 +11,6 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="brand">
-        <!-- Somente a logo (ícone) -->
         <img src="logo.png" alt="Sonax" class="brand-logo" />
       </div>
 
@@ -38,11 +37,10 @@
         </div>
 
         <div class="top-actions">
-          <button id="export-todos" class="btn btn-outline">
+          <button id="export-todos" class="btn btn-outline" type="button">
             <span class="icon">⬇</span> Exportar (CSV)
           </button>
 
-          <!-- Botão + Adicionar com menu -->
           <div class="add-wrap">
             <button id="btn-add" class="btn btn-primary" type="button">+ Adicionar</button>
             <div id="add-menu" class="menu hidden" role="menu" aria-hidden="true">
@@ -78,7 +76,6 @@
           </div>
         </div>
 
-        <!-- Destaques: empilhados um abaixo do outro -->
         <div class="stack">
           <div class="card card-lg">
             <div class="card-header">
@@ -126,29 +123,35 @@
       </section>
     </main>
 
-    <!-- Hero da assistente (não clica, não atrapalha) -->
     <img src="assistant.png" alt="Assistente" class="assistant-hero" />
   </div>
 
   <!-- Overlay + Modais -->
   <div id="overlay" class="hidden"></div>
 
-  <!-- Modal Agente -->
-  <div id="modal-agente" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="agente-title">
+  <!-- Modal Agente (Adicionar/Editar) -->
+  <div id="modal-agente" class="modal hidden">
     <div class="modal-content">
       <h3 id="agente-title">Adicionar agente</h3>
+      <input id="agente-id" type="hidden" />
       <input id="agente-nome" placeholder="Nome do colaborador" />
+      <select id="agente-status">
+        <option value="ativo">Ativo</option>
+        <option value="ferias">Férias</option>
+        <option value="atestado">Atestado</option>
+        <option value="folga">Folga Compensação</option>
+      </select>
       <div class="modal-actions">
-        <button class="btn" data-close="agente" type="button">Cancelar</button>
-        <button id="agente-save" class="btn btn-primary" type="button">Salvar</button>
+        <button class="btn" data-close="agente">Cancelar</button>
+        <button id="agente-save" class="btn btn-primary">Salvar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Férias -->
-  <div id="modal-ferias" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ferias-title">
+  <!-- Modal Férias (cadastro de agenda de férias) -->
+  <div id="modal-ferias" class="modal hidden">
     <div class="modal-content">
-      <h3 id="ferias-title">Adicionar próximas férias</h3>
+      <h3>Adicionar próximas férias</h3>
       <input id="ferias-nome" placeholder="Nome do colaborador" />
       <select id="ferias-mes">
         <option value="" disabled selected>Mês</option>
@@ -160,8 +163,8 @@
         <option value="11">Novembro</option><option value="12">Dezembro</option>
       </select>
       <div class="modal-actions">
-        <button class="btn" data-close="ferias" type="button">Cancelar</button>
-        <button id="ferias-save" class="btn btn-primary" type="button">Salvar</button>
+        <button class="btn" data-close="ferias">Cancelar</button>
+        <button id="ferias-save" class="btn btn-primary">Salvar</button>
       </div>
     </div>
   </div>

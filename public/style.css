@@ -55,7 +55,7 @@ body{
 /* ===== Topbar ===== */
 .topbar{
   display:flex;justify-content:space-between;align-items:flex-end;
-  margin-bottom:18px;position:relative;z-index:20; /* acima dos cards/assistente */
+  margin-bottom:18px;position:relative;z-index:20;
 }
 .titles h1{margin:0 0 2px;font-size:28px}
 .muted{color:var(--muted);font-size:13px}
@@ -67,7 +67,7 @@ body{
   position:absolute; right:0; top:44px;
   background:#fff; border:1px solid var(--line); border-radius:12px;
   box-shadow:var(--shadow); padding:6px; min-width:220px;
-  z-index:50; /* alto pra ficar clicável */
+  z-index:50;
 }
 .menu-item{
   display:block;width:100%;text-align:left;background:#fff;border:0;
@@ -113,6 +113,7 @@ body{
 .pill-red{background:#ffebed;color:#d23b3b}
 .pill-amber{background:#fff5e6;color:#b56a07}
 .pill-muted{background:#edf3fa;color:#5f7a99}
+.pill-blue{background:#e8f2ff;color:#1e60d8}
 .chip{background:#edf3ff;color:#285f9b;padding:6px 10px;border-radius:999px;font-weight:700}
 
 /* ===== List rows ===== */
@@ -132,7 +133,7 @@ body{
   width:340px; max-width:28vw; object-fit:contain;
   pointer-events:none; opacity:.95;
   filter: drop-shadow(0 10px 30px rgba(0,0,0,.12));
-  z-index:10; /* abaixo do topo/menu */
+  z-index:10;
 }
 
 /* ===== Modal ===== */
